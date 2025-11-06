@@ -1,5 +1,5 @@
 {
-    "name": "react-native-remotely-monorepo",
+    "name": "remkit-monorepo",
     "private": true,
     "scripts": {
         "build": "turbo run build",

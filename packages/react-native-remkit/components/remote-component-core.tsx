@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Text } from "react-native";
-import { InitRemotelyOptions } from "../functions/remotely";
+import { InitRemkitOptions } from "../functions/remkit";
 import { createRemoteModule } from "../helpers/create-remote";
 
 type RemoteComponentCoreProps = {
-    options: InitRemotelyOptions;
+    options: InitRemkitOptions;
     props: Record<string, unknown>;
 };
 

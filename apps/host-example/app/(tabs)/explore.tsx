@@ -1,5 +1,5 @@
+import { remkit } from "@remkit/react-native";
 import { StyleSheet } from "react-native";
-import { remotely, setup } from "react-native-remotely";
 
 // setup({
 //     shared: {
@@ -7,7 +7,7 @@ import { remotely, setup } from "react-native-remotely";
 //     },
 // });
 
-const RemoteComponent = remotely({ url: "http://192.168.15.33:3001/index.js" });
+const RemoteComponent = remkit({ url: "http://192.168.15.33:3001/index.js" });
 
 export default function TabTwoScreen() {
     return <RemoteComponent />;
