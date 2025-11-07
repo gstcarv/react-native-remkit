@@ -7,7 +7,7 @@ import { StyleSheet } from "react-native";
 //     },
 // });
 
-const RemoteComponent = remkit({ url: "http://192.168.15.33:3001/index.js" });
+const RemoteComponent = remkit({ url: "http://192.168.15.33:3000/remoteEntry.js" });
 
 export default function TabTwoScreen() {
     return <RemoteComponent />;

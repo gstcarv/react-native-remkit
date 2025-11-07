@@ -5,7 +5,7 @@ import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/use-color-scheme";
-import { setup } from "react-native-remkit";
+import { setup } from "@remkit/react-native";
 
 export const unstable_settings = {
     anchor: "(tabs)",
@@ -23,6 +23,7 @@ setup({
         "expo-status-bar": require("expo-status-bar"),
         "expo-symbols": require("expo-symbols"),
         "expo-system-ui": require("expo-system-ui"),
+        "react-native-safe-area-context": require("react-native-safe-area-context"),
         "expo-web-browser": require("expo-web-browser"),
         "react-native-gesture-handler": require("react-native-gesture-handler"),
         "react-native-reanimated": require("react-native-reanimated"),

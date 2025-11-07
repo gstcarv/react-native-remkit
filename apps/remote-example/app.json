@@ -1,0 +1,22 @@
+{
+    "expo": {
+        "name": "remote-example",
+        "slug": "remote-example",
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "scheme": "remoteexample",
+        "userInterfaceStyle": "automatic",
+        "newArchEnabled": true,
+        "ios": {
+            "supportsTablet": true
+        },
+        "web": {
+            "output": "static"
+        },
+        "plugins": ["expo-router"],
+        "experiments": {
+            "typedRoutes": true,
+            "reactCompiler": true
+        }
+    }
+}

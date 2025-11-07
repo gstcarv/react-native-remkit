@@ -1,0 +1,12 @@
+{
+    "name": "remote-example",
+    "externals": [
+        "react",
+        "react-native",
+        "react/jsx-runtime",
+        "react-native-gesture-handler",
+        "react-native-safe-area-context"
+    ],
+    "entry": "index.tsx",
+    "output": "dist"
+}
