@@ -1,0 +1,39 @@
+# Source files
+*.ts
+*.tsx
+!dist/**/*.d.ts
+
+# Development files
+tsconfig.json
+.eslintrc*
+.prettierrc*
+.gitignore
+
+# Dependencies
+node_modules/
+
+# Build artifacts (keep dist/)
+*.log
+*.map
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test files
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.ts
+**/*.spec.tsx
+
+# Example files
+examples/
+*.example.*
+

@@ -1,20 +1,46 @@
 {
     "name": "@remkit/react-native",
     "version": "1.0.0",
-    "description": "",
-    "main": "index.ts",
+    "description": "Build modular React Native apps with remote components - micro-frontend architecture for React Native",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "files": [
+        "dist",
+        "global.d.ts",
+        "README.md"
+    ],
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "build": "tsc",
+        "prepublishOnly": "npm run build",
+        "check-types": "tsc --noEmit"
     },
-    "keywords": [],
+    "keywords": [
+        "react-native",
+        "micro-frontend",
+        "remote-components",
+        "module-federation",
+        "remkit",
+        "react",
+        "typescript",
+        "expo"
+    ],
     "author": "",
     "license": "MIT",
-    "peerDependencies": {
-        "react": "19.1.0",
-        "react-dom": "19.1.0",
-        "react-native": "0.81.5"
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/gstcarv/react-native-remkit.git",
+        "directory": "packages/react-native-remkit"
     },
-    "dependencies": {
-        "@types/react": "~19.1.0"
+    "bugs": {
+        "url": "https://github.com/gstcarv/react-native-remkit/issues"
+    },
+    "homepage": "https://github.com/gstcarv/react-native-remkit#readme",
+    "peerDependencies": {
+        "react": ">=18.0.0",
+        "react-native": ">=0.70.0"
+    },
+    "devDependencies": {
+        "@types/react": "~19.1.0",
+        "typescript": "5.9.2"
     }
 }

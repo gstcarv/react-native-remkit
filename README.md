@@ -107,7 +107,7 @@ Initialize RemKit configuration:
 
 ```bash
 # In your remote app directory
-npx remkit init
+npx @remkit/cli init
 ```
 
 This creates a `remkit.config.json` file:
