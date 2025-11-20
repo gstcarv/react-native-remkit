@@ -1,133 +1,423 @@
-# Turborepo starter
+# 🚀 React Native RemKit
 
-This Turborepo starter is maintained by the Turborepo core team.
+<div align="center">
 
-## Using this example
+**Build modular React Native apps with remote components!** 🎨
 
-Run the following command:
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React Native](https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactnative.dev/)
+[![Expo](https://img.shields.io/badge/Expo-1C1E24?style=for-the-badge&logo=expo&logoColor=white)](https://expo.dev/)
 
-```sh
-npx create-turbo@latest
+</div>
+
+---
+
+## ✨ What is RemKit?
+
+RemKit is a powerful toolkit that enables **micro-frontend architecture** for React Native applications! 🎯
+
+- 🔄 **Load components remotely** - Dynamically fetch and render components from remote URLs
+- 🧩 **Modular architecture** - Build and deploy components independently
+- 🔗 **Shared dependencies** - Efficiently share React and React Native between host and remote apps
+- 🛠️ **Easy CLI** - Simple commands to build and serve remote components
+- 📦 **TypeScript support** - Full TypeScript support out of the box
+
+---
+
+## 📦 Packages
+
+This monorepo contains two main packages:
+
+| Package | Description |
+|---------|-------------|
+| **`@remkit/react-native`** 📱 | Core library for loading and rendering remote components |
+| **`@remkit/cli`** 🛠️ | CLI tool for building remote component bundles |
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js >= 18
+- pnpm >= 9.0.0 (or npm/yarn)
+- React Native development environment set up
+
+### Installation
+
+#### 1. Install the packages
+
+```bash
+# Install the core library in your host app
+pnpm add @remkit/react-native
+
+# Install the CLI in your remote app (as dev dependency)
+pnpm add -D @remkit/cli
 ```
 
-## What's inside?
+#### 2. Setup the host app
 
-This Turborepo includes the following packages/apps:
+In your host app, configure shared dependencies:
 
-### Apps and Packages
+```tsx
+// app/_layout.tsx or your root component
+import { setup } from "@remkit/react-native";
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+setup({
+  shared: {
+    react: require("react"),
+    "react-native": require("react-native"),
+    // Add any other shared dependencies
+  },
+});
 ```
 
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+#### 3. Create a remote component
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
+Create a new React Native component in your remote app:
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
+```tsx
+// remote-app/index.tsx
+import { View, Text, StyleSheet } from "react-native";
 
-### Develop
+export default function MyRemoteComponent() {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.text}>Hello from Remote! 🎉</Text>
+    </View>
+  );
+}
 
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
-```
-
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  text: {
+    fontSize: 24,
+    fontWeight: "bold",
+  },
+});
 ```
 
-### Remote Caching
+#### 4. Configure the remote app
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+Initialize RemKit configuration:
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
+```bash
+# In your remote app directory
+npx remkit init
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+This creates a `remkit.config.json` file:
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+```json
+{
+  "name": "my-remote-app",
+  "externals": [
+    "react",
+    "react-native",
+    "react/jsx-runtime"
+  ],
+  "entry": "index.tsx",
+  "output": "dist"
+}
+```
+
+#### 5. Build the remote component
+
+```bash
+# Build the remote component bundle
+npx remkit build
+```
+
+This generates a `remoteEntry.js` file in the `dist` directory.
+
+#### 6. Serve the remote component
+
+Serve the `dist` directory using any static file server:
+
+```bash
+# Using serve (install with: pnpm add -D serve)
+npx serve -s dist -l 3000
+
+# Or using http-server
+npx http-server dist -p 3000
+
+# Or using Python
+python -m http.server 3000 --directory dist
+```
+
+#### 7. Use the remote component in your host app
+
+```tsx
+// host-app/components/RemoteComponent.tsx
+import { remkit } from "@remkit/react-native";
+
+// Create a remote component instance
+const RemoteComponent = remkit({
+  url: "http://localhost:3000/remoteEntry.js", // URL to your remote bundle
+});
+
+export default function MyScreen() {
+  return (
+    <View>
+      <RemoteComponent />
+    </View>
+  );
+}
+```
+
+#### 8. Pass props to remote components
+
+```tsx
+const RemoteComponent = remkit<{ title: string; count: number }>({
+  url: "http://localhost:3000/remoteEntry.js",
+});
+
+export default function MyScreen() {
+  return (
+    <RemoteComponent 
+      title="Hello World" 
+      count={42} 
+    />
+  );
+}
+```
+
+---
+
+## 📚 Complete Example
+
+### Host App Structure
 
 ```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
+host-app/
+├── app/
+│   ├── _layout.tsx          # Setup shared dependencies
+│   └── (tabs)/
+│       └── explore.tsx       # Use remote component
+└── package.json
 ```
 
-## Useful Links
+**`app/_layout.tsx`**:
+```tsx
+import { setup } from "@remkit/react-native";
 
-Learn more about the power of Turborepo:
+setup({
+  shared: {
+    react: require("react"),
+    "react-native": require("react-native"),
+  },
+});
+```
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+**`app/(tabs)/explore.tsx`**:
+```tsx
+import { remkit } from "@remkit/react-native";
+
+const RemoteMovies = remkit({
+  url: "http://localhost:3000/remoteEntry.js",
+});
+
+export default function ExploreScreen() {
+  return <RemoteMovies />;
+}
+```
+
+### Remote App Structure
+
+```
+remote-app/
+├── index.tsx                 # Remote component
+├── remkit.config.json        # RemKit configuration
+├── dist/
+│   └── remoteEntry.js        # Built bundle (generated)
+└── package.json
+```
+
+**`index.tsx`**:
+```tsx
+import { View, Text, FlatList } from "react-native";
+
+export default function MoviesList() {
+  const movies = [
+    { id: 1, title: "The Matrix" },
+    { id: 2, title: "Inception" },
+    { id: 3, title: "Interstellar" },
+  ];
+
+  return (
+    <View>
+      <Text>My Favorite Movies 🎬</Text>
+      <FlatList
+        data={movies}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => <Text>{item.title}</Text>}
+      />
+    </View>
+  );
+}
+```
+
+**`remkit.config.json`**:
+```json
+{
+  "name": "movies-remote",
+  "externals": [
+    "react",
+    "react-native",
+    "react/jsx-runtime"
+  ],
+  "entry": "index.tsx",
+  "output": "dist"
+}
+```
+
+---
+
+## 🎯 Key Concepts
+
+### Shared Dependencies
+
+Shared dependencies are libraries that both the host and remote apps use. By marking them as shared:
+
+- ✅ Reduces bundle size
+- ✅ Prevents duplicate loading
+- ✅ Ensures version consistency
+
+Common shared dependencies:
+- `react`
+- `react-native`
+- `react/jsx-runtime`
+- `react-native-gesture-handler`
+- `react-native-safe-area-context`
+
+### External Dependencies
+
+In `remkit.config.json`, the `externals` array lists dependencies that should NOT be bundled with the remote component. These are expected to be provided by the host app via the `setup()` function.
+
+---
+
+## 🛠️ CLI Commands
+
+### `remkit init`
+
+Initialize a new RemKit configuration file.
+
+```bash
+npx remkit init
+```
+
+### `remkit build`
+
+Build the remote component bundle.
+
+```bash
+npx remkit build
+```
+
+Options:
+- Reads configuration from `remkit.config.json`
+- Outputs `remoteEntry.js` to the configured output directory
+
+---
+
+## 🔧 Configuration
+
+### `remkit.config.json`
+
+```json
+{
+  "name": "my-remote-app",           // Name of your remote app
+  "externals": [                     // Dependencies to exclude from bundle
+    "react",
+    "react-native"
+  ],
+  "entry": "index.tsx",              // Entry point file
+  "output": "dist"                   // Output directory
+}
+```
+
+---
+
+## 💡 Tips & Best Practices
+
+1. **🔒 Security**: Only load remote components from trusted sources
+2. **🌐 Network**: Use HTTPS in production for secure component loading
+3. **⚡ Performance**: Cache remote components when possible
+4. **🐛 Debugging**: Check browser/device console for loading errors
+5. **📦 Bundle Size**: Keep externals list comprehensive to reduce bundle size
+6. **🔄 Updates**: Remote components can be updated without rebuilding the host app
+
+---
+
+## 🐛 Troubleshooting
+
+### Component not loading?
+
+- ✅ Check the URL is accessible
+- ✅ Verify CORS is configured correctly
+- ✅ Ensure shared dependencies are set up
+- ✅ Check browser/device console for errors
+
+### Type errors?
+
+- ✅ Ensure TypeScript types match between host and remote
+- ✅ Use generic types when creating remote components: `remkit<YourProps>({...})`
+
+### Build errors?
+
+- ✅ Verify `remkit.config.json` is correct
+- ✅ Check that entry file exists
+- ✅ Ensure all externals are properly configured
+
+---
+
+## 📖 API Reference
+
+### `setup(options)`
+
+Configure shared dependencies for the host app.
+
+```tsx
+setup({
+  shared: {
+    [key: string]: unknown;
+  };
+});
+```
+
+### `remkit<TProps>(options)`
+
+Create a remote component loader.
+
+```tsx
+remkit<TProps>({
+  url: string;  // URL to remoteEntry.js
+}): React.ComponentType<TProps>
+```
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to open issues or submit pull requests.
+
+---
+
+## 📄 License
+
+MIT
+
+---
+
+<div align="center">
+
+**Made with ❤️ for the React Native community**
+
+⭐ Star this repo if you find it useful!
+
+</div>
+

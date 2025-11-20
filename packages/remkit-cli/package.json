@@ -19,7 +19,7 @@
         "react-native"
     ],
     "author": "",
-    "license": "ISC",
+    "license": "MIT",
     "dependencies": {
         "@babel/plugin-transform-runtime": "^7.28.5",
         "@babel/runtime": "^7.28.4",
