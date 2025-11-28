@@ -1,3 +1,4 @@
+import { ComponentNotFoundError } from "../errors/component-not-found";
 import { getGlobalInstance } from "./global-instance";
 
 export async function createRemoteModule(url: string) {
@@ -5,7 +6,13 @@ export async function createRemoteModule(url: string) {
 
     parseRemoteModule(remoteModule);
 
-    return (getGlobalInstance()["RemoteLib"] as Record<string, unknown>)?.default;
+    const component = (getGlobalInstance()["RemoteLib"] as Record<string, unknown>)?.default;
+
+    if (!component) {
+        throw new ComponentNotFoundError({ url });
+    }
+
+    return component;
 }
 
 async function requestRemoteModule(url: string) {
