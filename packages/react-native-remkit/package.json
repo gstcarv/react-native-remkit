@@ -1,6 +1,6 @@
 {
     "name": "@remkit/react-native",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "Build modular React Native apps with remote components - micro-frontend architecture for React Native",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Text } from "react-native";
 import { InitRemkitOptions } from "../functions/remkit";
 import { createRemoteModule } from "../helpers/create-remote";
 
@@ -17,7 +16,7 @@ export function RemoteComponentCore({ options, props }: RemoteComponentCoreProps
         });
     }, [props.url]);
 
-    if (!Component) return <Text>Loading...</Text>;
+    if (!Component) return options.loading?.() ?? null;
 
     return <Component {...props} />;
 }

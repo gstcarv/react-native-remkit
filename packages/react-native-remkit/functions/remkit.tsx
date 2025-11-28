@@ -3,6 +3,7 @@ import { RemoteComponentCore } from "../components/remote-component-core";
 
 export type InitRemkitOptions = {
     url: string;
+    loading?: () => React.ReactNode;
 };
 
 export const remkit = <TProps extends Record<string, unknown> = {}>(
