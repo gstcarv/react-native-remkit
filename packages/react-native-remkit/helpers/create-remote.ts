@@ -1,8 +1,13 @@
 import { ComponentNotFoundError } from "../errors/component-not-found";
 import { getGlobalInstance } from "./global-instance";
 
-export async function createRemoteModule(url: string) {
-    const remoteModule = await requestRemoteModule(url);
+export type CreateRemoteModuleOptions = {
+    /** Appends a cache-busting param so a reload fetches fresh content. */
+    bustCache?: boolean;
+};
+
+export async function createRemoteModule(url: string, options: CreateRemoteModuleOptions = {}) {
+    const remoteModule = await requestRemoteModule(options.bustCache ? withCacheBust(url) : url);
 
     parseRemoteModule(remoteModule);
 
@@ -13,6 +18,11 @@ export async function createRemoteModule(url: string) {
     }
 
     return component;
+}
+
+function withCacheBust(url: string) {
+    const separator = url.includes("?") ? "&" : "?";
+    return `${url}${separator}__remkit=${Date.now()}`;
 }
 
 async function requestRemoteModule(url: string) {

@@ -186,6 +186,58 @@ export default function MyScreen() {
 }
 ```
 
+#### 9. Reload a remote component
+
+RemKit lets you re-fetch a remote component at runtime (e.g. after publishing a new bundle, or on pull-to-refresh). A reload always bypasses the HTTP cache so you get fresh content.
+
+**Option A — imperative `ref`**
+
+```tsx
+import { useRef } from "react";
+import { Button } from "react-native";
+import { remkit, RemkitHandle } from "@remkit/react-native";
+
+const RemoteComponent = remkit({
+  url: "http://localhost:3000/remoteEntry.js",
+});
+
+export default function MyScreen() {
+  const ref = useRef<RemkitHandle>(null);
+
+  return (
+    <>
+      <RemoteComponent ref={ref} />
+      <Button title="Reload" onPress={() => ref.current?.reload()} />
+    </>
+  );
+}
+```
+
+**Option B — `useRemkit` hook**
+
+Gives you direct access to the loading/error state and the `reload` function.
+
+```tsx
+import { Button } from "react-native";
+import { useRemkit } from "@remkit/react-native";
+
+export default function MyScreen() {
+  const { Component, loading, error, reload } = useRemkit({
+    url: "http://localhost:3000/remoteEntry.js",
+  });
+
+  if (error) return <Text>Failed to load: {error.message}</Text>;
+  if (!Component) return <Text>Loading…</Text>;
+
+  return (
+    <>
+      <Component title="Hello" />
+      <Button title="Reload" onPress={reload} disabled={loading} />
+    </>
+  );
+}
+```
+
 ---
 
 ## 📚 Complete Example
@@ -395,8 +447,33 @@ Create a remote component loader.
 
 ```tsx
 remkit<TProps>({
-  url: string;  // URL to remoteEntry.js
-}): React.ComponentType<TProps>
+  url: string;                    // URL to remoteEntry.js
+  loading?: () => React.ReactNode; // Optional custom loading component
+}): RemkitComponentType<TProps>
+```
+
+The returned component forwards a `ref` of type `RemkitHandle`:
+
+```tsx
+type RemkitHandle = {
+  reload: () => void; // Re-fetch the remote component, bypassing the cache
+};
+```
+
+### `useRemkit(options)`
+
+Hook version of `remkit()`. Returns the resolved component along with its state and a `reload` function.
+
+```tsx
+useRemkit({
+  url: string;
+  loading?: () => React.ReactNode;
+}): {
+  Component: React.ComponentType | null; // null until loaded
+  loading: boolean;                       // true while (re)fetching
+  error: Error | null;                    // last load error, if any
+  reload: () => void;                     // re-fetch, bypassing the cache
+}
 ```
 
 ---

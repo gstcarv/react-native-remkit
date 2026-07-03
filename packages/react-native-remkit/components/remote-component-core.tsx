@@ -1,22 +1,29 @@
-import { useEffect, useState } from "react";
+import { forwardRef, useImperativeHandle } from "react";
 import { InitRemkitOptions } from "../functions/remkit";
-import { createRemoteModule } from "../helpers/create-remote";
+import { useRemkit } from "../hooks/use-remkit";
+
+export type RemkitHandle = {
+    /** Re-fetches the remote component, bypassing any HTTP cache. */
+    reload: () => void;
+};
 
 type RemoteComponentCoreProps = {
     options: InitRemkitOptions;
     props: Record<string, unknown>;
 };
 
-export function RemoteComponentCore({ options, props }: RemoteComponentCoreProps) {
-    const [Component, setComponent] = useState<React.ComponentType<Record<string, unknown>> | null>(null);
+export const RemoteComponentCore = forwardRef<RemkitHandle, RemoteComponentCoreProps>(
+    ({ options, props }, ref) => {
+        const { Component, error, reload } = useRemkit(options);
 
-    useEffect(() => {
-        createRemoteModule(options.url).then((module) => {
-            setComponent(() => module as React.ComponentType<Record<string, unknown>>);
-        });
-    }, [props.url]);
+        useImperativeHandle(ref, () => ({ reload }), [reload]);
 
-    if (!Component) return options.loading?.() ?? null;
+        // Surface load failures to the nearest error boundary.
+        if (error) throw error;
 
-    return <Component {...props} />;
-}
+        // Keep the previous component mounted during a reload to avoid a flash.
+        if (!Component) return options.loading?.() ?? null;
+
+        return <Component {...props} />;
+    }
+);
